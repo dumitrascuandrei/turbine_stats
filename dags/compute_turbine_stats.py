@@ -8,7 +8,7 @@ import logging
 from typing import Union
 
 
-def create_connection() -> PostgresHook.connection:
+def create_connection():
     """
             Create connection with the Postgress DB via airflow hook.
 
@@ -46,10 +46,10 @@ def handle_missing_and_outliers_values(df: pd.DataFrame) -> pd.DataFrame:
 
         df = df[(df[col] < q_hi) & (df[col] > q_low)]
 
-    return df.reset_index().drop(columns=['index'], inplace=True)
+    return df.reset_index().drop(columns=['index'])
 
 
-def get_last_updated_date(conn: PostgresHook.connection) -> Union[datetime.date, None]:
+def get_last_updated_date(conn) -> Union[datetime.date, None]:
     """
     Get the last updated date in the database.
 
@@ -99,7 +99,7 @@ def set_datetime_index(df: pd.DataFrame, dt: Union[datetime.date, None]) -> pd.D
     return df
 
 
-def calculate_stats(df: pd.Dataframe) -> pd.DataFrame:
+def calculate_stats(df: pd.DataFrame) -> pd.DataFrame:
     """
     Compute the min,max, mean for each turbine in a 24h window.
     Parameters
@@ -120,7 +120,7 @@ def calculate_stats(df: pd.Dataframe) -> pd.DataFrame:
     return df_final
 
 
-def find_anomalies(df: pd.Dataframe) -> pd.Dataframe:
+def find_anomalies(df: pd.DataFrame) -> pd.DataFrame:
     """
     Find the anomalies in the power_output values.
     Parameters
@@ -159,7 +159,7 @@ def find_anomalies(df: pd.Dataframe) -> pd.Dataframe:
     return df_merged
 
 
-def combine_results(df1: pd.Dataframe, df2: pd.Dataframe) -> pd.Dataframe:
+def combine_results(df1: pd.DataFrame, df2: pd.DataFrame) -> pd.DataFrame:
     """
 
     Parameters
@@ -185,7 +185,7 @@ def combine_results(df1: pd.Dataframe, df2: pd.Dataframe) -> pd.Dataframe:
     return df_merged
 
 
-def create_table(conn: PostgresHook.connection) -> None:
+def create_table(conn) -> None:
     """
     Create the table in Postgress if it doesn't exists already
     Parameters
@@ -211,7 +211,7 @@ def create_table(conn: PostgresHook.connection) -> None:
     conn.commit()
 
 
-def insert_rows(df: pd.DataFrame, conn: PostgresHook.connection) -> None:
+def insert_rows(df: pd.DataFrame, conn) -> None:
     """
     Insert data into database, only if the key (timestamp,turbine_id,operation_type) is unique.
     Parameters
