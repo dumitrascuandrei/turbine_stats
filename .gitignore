@@ -160,4 +160,4 @@ cython_debug/
 #.idea/
 
 #documents
-dags/
+dags/data/
